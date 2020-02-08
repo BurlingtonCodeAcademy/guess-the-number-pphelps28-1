@@ -15,7 +15,7 @@ async function start() {
   if (typeof topOfRange !== 'number') { //sanitizes range input; returns 100 if entry is not a number
     topOfRange = 100
   }
-  console.log(`\nLet's play a game where you make up a number and I try to guess it.  Make sure it's between 1 and ${topOfRange}`)
+  console.log(`\n Ok, make up a number and I'll try to guess it.  Make sure it's between 1 and ${topOfRange}`)
 
   ready(bottomOfRange, topOfRange);
   //starts recursion
@@ -36,8 +36,7 @@ async function isThisIt(min, max) { //takes range as arguments
     console.log('\n Invalid input! \n')
     return isThisIt(min, max);
   } if (yesOrNo === "Y") { //win condition!  You said they guessed it, so the computer wins!
-    console.log("\nᕙ(^▿^-ᕙ) I did it!\n\n Your number was " + guess + "!\n")
-    process.exit();
+    console.log("\nᕙ(^▿^-ᕙ) I did it!\n\n Your number was " + guess + "!\n'Ok now it's my turn!'")
   } if (yesOrNo === "N" && min === max) {   //indicates an exhausted search based on given clues:  exits program. and judges you.
     console.log("\n You think this is a game? -_-+\n")
     process.exit();
@@ -60,7 +59,7 @@ async function higherLower(min, max, currentGuess) {
   isThisIt(min, max)  //calls stack with new range
 }
 
-async function ready(min, max) {
+async function ready(min, max) { //code to initiate the game;  give user a chance to think of a number, or exit.
   let response = await ask('\n Ok, ready to play? "Y" or "N" ')
   response = response.trim().toUpperCase()
   if (response !== "Y" && response !== "N") {

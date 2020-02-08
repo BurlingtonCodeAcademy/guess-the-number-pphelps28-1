@@ -8,7 +8,7 @@ function ask(questionText) {
 }
 start()
 async function start() {
-    console.log(`\nLet's play a game!  Ok. Hm.... I know!  Guess what number I'm thinking of.\n It's between 1 and 100`)
+    console.log(`\n Ok. Hm.... I know!  Guess what number I'm thinking of.\n It's between 1 and 100`)
     let compNumber = Math.round(Math.random() * (100 - 1) + 1) //fixed range;  kept formula syntax for easy substitution.
     console.log(compNumber) //displays computer's number.  For sanity's sake.  I'm not gonna guess for it every time. 
     promptGuess(compNumber)
