@@ -1,16 +1,9 @@
 const readline = require('readline');
 const rl = readline.createInterface(process.stdin, process.stdout);
-
-function ask(questionText) {
-    return new Promise((resolve, reject) => {
-        rl.question(questionText, resolve);
-    });
-}
 start();  //begins program
-
 async function start() {
+    topOfRange = parseInt(process.argv.slice(2)[0]) || 100 //process.argv returns an array of strings, converted to number
     let bottomOfRange = 1
-    let topOfRange = parseInt(process.argv.slice(2)[0]) || 100 //process.argv returns an array of strings, converted to number
     if (typeof topOfRange !== 'number') { //sanitizes range input; returns 100 if entry is not a number
         topOfRange = 100
     }
@@ -19,14 +12,16 @@ async function start() {
     ready(bottomOfRange, topOfRange);
     //starts recursion for first game
 }
-
 //////////////////////////////hoisted functions (for game1)////////////////////////////////////
-
+function ask(questionText) {
+    return new Promise((resolve, reject) => {
+        rl.question(questionText, resolve);
+    });
+}
 function aiGuess(min, max) { //calculates guess based on range, binary sorth algorithm
     let guess = Math.round(((max - min) / 2) + min)
     return guess
 }
-
 async function ready(min, max) { //code to initiate the game;  give user a chance to think of a number, or exit.
     let response = await ask('\n Ok, ready to play? "Y" or "N" ')
     response = response.trim().toUpperCase()
@@ -48,7 +43,6 @@ async function isThisIt(min, max) { //takes range as arguments
         console.log('\n Invalid input! \n')
         return isThisIt(min, max);
     } if (yesOrNo === "Y") { //win condition!  You said they guessed it, so the computer wins!
-        // console.log("\n ᕙ(^▿^-ᕙ) I did it!\n\n Your number was " + guess + "!\n Ok now it's my turn!")
         console.log("\x1b[36m \n \n Your number was " + guess + "! ᕙ(^▿^-ᕙ)\n\x1b[0m \n Ok now it's my turn!")
         start2()
     } if (yesOrNo === "N" && min === max) {   //indicates an exhausted search based on given clues:  exits program. and judges you.
@@ -58,7 +52,6 @@ async function isThisIt(min, max) { //takes range as arguments
         higherLower(min, max, guess)
     }
 }
-
 async function higherLower(min, max, currentGuess) {
     let higherOrLower = await ask('\n Ok, is your number higher or lower? "H" or "L" \n')
     higherOrLower = higherOrLower.toUpperCase().trim() //santitizes if possible
@@ -72,28 +65,22 @@ async function higherLower(min, max, currentGuess) {
     }
     isThisIt(min, max)  //calls stack with new range
 }
-
-
-
-
 ////////////////////////////////////////////youGuess (game2)///////////////////////////////////////////////////
-
 async function start2() {
-    console.log(`\n Guess what number I'm thinking of.\n It's between 1 and 100`)
-    let compNumber = Math.round(Math.random() * (100 - 1) + 1) //fixed range;  kept formula syntax for easy substitution.
-    // console.log(compNumber) //displays computer's number.  For sanity's sake.  I'm not gonna guess for it every time. 
+    console.log(`\n Guess what number I'm thinking of.\n It's between 1 and ${topOfRange}`)
+    let compNumber = Math.round(Math.random() * (topOfRange - 1) + 1) //fixed range;  kept formula syntax for easy substitution.
+    console.log(compNumber) //displays computer's number.  For sanity's sake.
     promptGuess(compNumber)
 }
 //////////////////////////function(s)//////////////////////////
-
 async function promptGuess(answer) {
     let playerGuess = await ask("\n Ok, what's your guess?\n")
     playerGuess = +playerGuess.trim() //sanitizes input
     while (isNaN(+playerGuess)) { //prompts input again if not a number
-        console.log('\n Invalid input!\n Please enter a number between 1 and 100.')
+        console.log(`\n Invalid input!\n Please enter a number between 1 and ${topOfRange}.`)
         return promptGuess(answer)
     }
-    if (playerGuess < 1 || playerGuess > 100) { //prompts user again if not within range
+    if (playerGuess < 1 || playerGuess > topOfRange) { //prompts user again if not within range
         console.log('\n I said it was between 1 and 100.  Cmon.')
         return promptGuess(answer)
     }
