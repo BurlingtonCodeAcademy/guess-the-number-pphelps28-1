@@ -81,7 +81,7 @@ async function promptGuess(answer) {
         return promptGuess(answer)
     }
     if (playerGuess < 1 || playerGuess > topOfRange) { //prompts user again if not within range
-        console.log('\n I said it was between 1 and 100.  Cmon.')
+        console.log(`\n I said it was between 1 and ${topOfRange}.  Cmon.`)
         return promptGuess(answer)
     }
     if (playerGuess === answer) {
